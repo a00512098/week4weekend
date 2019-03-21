@@ -1,6 +1,7 @@
 package com.example.week4weekend.model.datasource.remote;
 
 import com.example.week4weekend.model.datasource.results.singleresponse.CurrentWeather;
+import com.example.week4weekend.model.datasource.results.weeklyresponse.WeeklyWeather;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -15,6 +16,7 @@ import static com.example.week4weekend.model.datasource.remote.CommonConstants.B
 import static com.example.week4weekend.model.datasource.remote.CommonConstants.HOURLY;
 import static com.example.week4weekend.model.datasource.remote.CommonConstants.METRIC;
 import static com.example.week4weekend.model.datasource.remote.CommonConstants.UNITS;
+import static com.example.week4weekend.model.datasource.remote.CommonConstants.WEEKLY;
 import static com.example.week4weekend.model.datasource.remote.CommonConstants.ZIP;
 
 public class RetrofitHelper {
@@ -38,6 +40,7 @@ public class RetrofitHelper {
         return retrofit;
     }
 
+    // Methods for current weather
     private static ObservableInterface createCurrentWeatherResponseInterface() {
         return getRetrofitInstance().create(ObservableInterface.class);
     }
@@ -51,9 +54,30 @@ public class RetrofitHelper {
                 );
     }
 
+    // Methods for weekly weather
+    private static ObservableInterface createWeeklyWeatherResponseInterface() {
+        return getRetrofitInstance().create(ObservableInterface.class);
+    }
+
+    public static Observable<WeeklyWeather> getWeeklyWeatherResponseObservable(String zipcode) {
+        return createWeeklyWeatherResponseInterface()
+                .getWeeklyWeatherObservable(
+                        zipcode,
+                        METRIC,
+                        API_KEY
+                );
+    }
+
     public interface ObservableInterface {
         @GET(HOURLY)
         Observable<CurrentWeather> getCurrentWeatherObservable(
+                @Query(ZIP) String queryZipCode,
+                @Query(UNITS) String queryUnits,
+                @Query(APPID) String apiKey
+        );
+
+        @GET(WEEKLY)
+        Observable<WeeklyWeather> getWeeklyWeatherObservable(
                 @Query(ZIP) String queryZipCode,
                 @Query(UNITS) String queryUnits,
                 @Query(APPID) String apiKey

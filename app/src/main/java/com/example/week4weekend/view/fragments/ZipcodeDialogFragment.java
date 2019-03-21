@@ -1,4 +1,4 @@
-package com.example.week4weekend;
+package com.example.week4weekend.view.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,8 +16,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static com.example.week4weekend.MainActivity.SHARED_PREFERENCES;
-import static com.example.week4weekend.MainActivity.ZIP_CODE;
+import com.example.week4weekend.R;
+
+import static com.example.week4weekend.utils.CommonConstants.SHARED_PREFERENCES;
+import static com.example.week4weekend.utils.CommonConstants.ZIP_CODE_PREFERENCES;
+
 
 public class ZipcodeDialogFragment extends DialogFragment {
 
@@ -49,9 +52,15 @@ public class ZipcodeDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        int zipCode = Integer.parseInt(dialogZipcode.getText().toString());
-                        saveZipCode(zipCode);
-                        dialogOptionSelected.onDoneSelected(zipCode);
+                        String zip = dialogZipcode.getText().toString();
+                        if (zip != null && zip.length() > 4) {
+                            int zipCode = Integer.parseInt(dialogZipcode.getText().toString());
+                            saveZipCode(zipCode);
+                            dialogOptionSelected.onDoneSelected(zipCode);
+                        } else {
+                            dialogOptionSelected.onCancelSelected();
+                            ZipcodeDialogFragment.this.getDialog().cancel();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -66,7 +75,7 @@ public class ZipcodeDialogFragment extends DialogFragment {
     private void saveZipCode(int zipCode) {
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(ZIP_CODE, zipCode);
+        editor.putInt(ZIP_CODE_PREFERENCES, zipCode);
         editor.apply();
         Toast.makeText(getContext(), "Zip Code Saved", Toast.LENGTH_SHORT).show();
         Log.d("Log.d", "Zip Code: " + zipCode);

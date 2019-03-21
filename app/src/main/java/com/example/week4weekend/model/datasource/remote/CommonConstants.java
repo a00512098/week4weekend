@@ -8,7 +8,9 @@ public class CommonConstants {
     // &units
     public static final String METRIC = "metric";
     public static final String IMPERIAL = "imperial";
-    //
+    // APPID
+    // This one is currently blocked
+    public static final String API_KEY2 = "516bdae377f29b59bbe512bf92bfbd16";
     public static final String API_KEY = "270f76eb2b0bfc21bc9ca9f68fbfb05a";
 
     // Query variables

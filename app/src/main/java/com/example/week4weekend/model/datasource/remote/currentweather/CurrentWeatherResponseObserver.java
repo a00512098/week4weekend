@@ -9,7 +9,7 @@ public class CurrentWeatherResponseObserver implements Observer<CurrentWeather> 
     private CurrentWeather currentWeatherResponse;
     private CurrentWeatherResponseCallback weatherResponseCallback;
 
-    CurrentWeatherResponseObserver(CurrentWeatherResponseCallback weatherResponseCallback) {
+    public CurrentWeatherResponseObserver(CurrentWeatherResponseCallback weatherResponseCallback) {
         this.weatherResponseCallback = weatherResponseCallback;
     }
 
